@@ -58,5 +58,3 @@ def send_email(recipient, new_info_matches):
 
     body, subject = format_email(new_info_matches)
     ezgmail.send(recipient, subject, body, mimeSubtype='html')
-    print('mail send')
-

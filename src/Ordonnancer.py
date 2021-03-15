@@ -1,8 +1,8 @@
 import json
 
-from EmailNotifier import send_email
-from IO import read, write
-from WebScraper import get_next_matches
+from .EmailNotifier import send_email
+from .IO import read, write
+from .WebScraper import get_next_matches
 
 
 """
