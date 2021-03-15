@@ -35,7 +35,9 @@ def format_email(matches):
     html = f"""
     <html>
     <head></head>
-      <body>pass
+      <body>
+        <h3>Upcoming matches for {matches[0]['team1']}</h3>
+        <br>
         {body}
       </body>
     </html>
