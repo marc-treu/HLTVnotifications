@@ -1,33 +1,34 @@
-import copy
 from datetime import datetime
 import ezgmail
 
 
 def format_date(matches):
-    matches_copie = []  # matches.copy()
+    """Convert the date from int to datetime.Object"""
+    matches_copies = []
     for m in matches:
         m_copy = m.copy()
         m_copy['time'] = datetime.fromtimestamp(m_copy['time'])
-        # m['time'] = datetime.fromtimestamp(m['time'])
-        matches_copie.append(m_copy)
-    return matches_copie  # [datetime.fromtimestamp(copy.deepcopy(m)['time']) for m in matches]
+        matches_copies.append(m_copy)
+    return matches_copies
 
 
 def format_hour(time):
+    """Return a str easier to read, of the time of the match"""
     return f'{time.hour}H{time.minute:02d}'
 
 
 def format_day(date):
+    """Return a str easier to read, of the date of the match"""
     return date.isoformat()[:10]
 
 
 def format_email(matches):
-    """
+    """Return the subject and email content with the information of upcoming events.
+    We use html to format the mail (making hyperlink).
 
-    :param body: A list of dictionary fill with info of next matches
-    :return: A well formatted
+    :param matches: A list of dictionary fill with information of next matches
+    :return: A well formatted email body and subject
     """
-
     matches = format_date(matches)
 
     body = "<br>".join([f'<a href="{m["url"]}">{m["team1"]} vs {m["team2"]} on {format_day(m["time"])}</a>' for m in matches])
@@ -46,15 +47,14 @@ def format_email(matches):
     return html, subject
 
 
-def send_email(recipient, new_info_matchs):
+def send_email(recipient, new_info_matches):
+    """Send a email with ezgmail library (with a gmail account) with information of following matches
+
+    :param recipient: A str with the recipient email address
+    :param new_info_matches: A list of dict fill with information of upcoming matches
     """
 
-    :param recipient:
-    :param new_info_matchs:
-    :return:
-    """
-
-    body, subject = format_email(new_info_matchs)
+    body, subject = format_email(new_info_matches)
     ezgmail.send(recipient, subject, body, mimeSubtype='html')
     print('mail send')
 

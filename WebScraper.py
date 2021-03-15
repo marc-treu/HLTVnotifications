@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-
 import requests
 
 
@@ -15,9 +14,9 @@ def get_html(url):
 
 
 def get_info_matches(matches_url):
-    """
+    """From each next matches url, return a list of dictionnary fill with information of upcoming event.
 
-    :param matches_url: A list
+    :param matches_url: A list of url for each following matches
     :return: A list of dictionary with essential info
     (ex : [{'team1': ['Vitality'], 'team2': ['FaZe'], 'time': datetime.datetime(2021, ...), 'url': 'https...'}, {...}])
     """
@@ -33,11 +32,11 @@ def get_info_matches(matches_url):
 
 
 def get_next_matches(team_name, team_number):
-    """
+    """Scrape HTLV.org to get usefull information about next matches
 
-    :param team_name:
-    :param team_number:
-    :return:
+    :param team_name: A str of the team name
+    :param team_number: A str of the unique number given by HLTV to every team
+    :return: A list of dictionary fill with information of next matches
     """
     team_url = f'https://www.hltv.org/team/{team_number}/{team_name}#tab-matchesBox'  # Url of the team we want matches info
 
@@ -46,11 +45,3 @@ def get_next_matches(team_name, team_number):
     next_matches_url = ["https://www.hltv.org" + match['href'] for match in html_page.findAll('a', {'class': 'matchpage-button'})]
 
     return get_info_matches(next_matches_url)
-
-
-if __name__ == '__main__':
-    url1 = 'https://www.hltv.org/team/9565/vitality#tab-matchesBox'
-    url2 = 'https://www.hltv.org/team/10503/og#tab-matchesBox'
-    soup = get_html(url1)
-    next_matches_url = [match['href'] for match in soup.findAll('a', {'class': 'matchpage-button'})]
-    print(next_matches_url)
